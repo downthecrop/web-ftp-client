@@ -3,11 +3,10 @@
  * Main script
  */
 const path = require('path')
-const mode = 'start'
-const { app, BrowserWindow, dialog, Menu, protocol } = require('electron');
-const url = require('url')
+const { app, BrowserWindow, dialog, Menu, protocol, ipcMain } = require('electron');
 const fs = require('fs');
-const { ipcMain } = require('electron')
+
+let mainWindow, callback;
 
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log(arg) // prints "ping"
@@ -18,8 +17,6 @@ ipcMain.on('synchronous-message', (event, arg) => {
   console.log(arg) // prints "ping"
   event.returnValue = 'pong'
 })
-
-let mainWindow, callback;
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
@@ -67,11 +64,9 @@ app.on('ready', () => {
 	  
   Error.stackTraceLimit = Infinity
 
-  if (mode === 'start') {
-    require(path.join(__dirname, 'routes'))
-    require(path.join(__dirname, 'websocketmgr'))
-    require(path.join(__dirname, 'config'))
-  }
+  require(path.join(__dirname, 'routes'))
+  require(path.join(__dirname, 'websocketmgr'))
+  require(path.join(__dirname, 'config'))
   
   createWindow()
 

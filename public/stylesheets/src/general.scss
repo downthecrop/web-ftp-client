@@ -159,6 +159,7 @@ html {
 
 .splitbox {
     height: 100%;
+	max-height: 500px;
     display: flex;
     > .template {
         padding: 10px;

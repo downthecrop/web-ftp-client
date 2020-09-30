@@ -1,0 +1,9 @@
+{
+  "1": {
+    "id": 1,
+    "username": "admin",
+    "passwordHash": "8a65c52e541212ba372e7bf4e4503508",
+    "loginHash": "31975344e3ba732092e1fb84c343d6ae",
+    "admin": true
+  }
+}

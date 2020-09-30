@@ -58,9 +58,9 @@ gl.tpl.load = function (name, callback) {
     gl.lang.replaceInHtml($tpl)
     if (callback) callback($tpl)
     // load the script to that
-    $.getScript('/tpl/dist/' + name + '.js')
+    $.getScript('./tpl/dist/' + name + '.js')
   }
-  $.get('/tpl/' + name + '.html', function (htmlData) {
+  $.get('./tpl/' + name + '.html', function (htmlData) {
     cb(htmlData)
   })
 }

@@ -2,69 +2,90 @@
 /**
  * Main script
  */
-
 const path = require('path')
-const mode = process.argv[2]
+const mode = 'start'
+const { app, BrowserWindow, dialog, Menu, protocol } = require('electron');
+const url = require('url')
+const fs = require('fs');
+const { ipcMain } = require('electron')
 
-Error.stackTraceLimit = Infinity
+ipcMain.on('asynchronous-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  event.reply('asynchronous-reply', 'pong')
+})
 
-if (!mode) {
-  process.stdout.write('Usage: node main.js start|update-core')
-  process.exit(0)
+ipcMain.on('synchronous-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  event.returnValue = 'pong'
+})
+
+let mainWindow, callback;
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.
+
+function createWindow () {
+  mainWindow = new BrowserWindow({
+	width: 900,
+	height: 880,
+    webPreferences: {
+        nodeIntegration: true
+    } 
+	})
+  mainWindow.loadURL('http://localhost:4340/')
+  mainWindow.webContents.openDevTools()
+  const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'Server Manager',
+        accelerator: 'FrankerZ',
+	      click: () => mainWindow.webContents.send('asynchronous-reply', 'FrankerZ'),
+	  },
+    {
+        label: 'About',
+        accelerator: '',
+        click: () => mainWindow.webContents.send('asynchronous-reply', 'About'),
+      },
+      {
+        label: 'Paste',
+        accelerator: 'CommandOrControl+V',
+        role: 'paste',
+      },
+    ]
+  }
+];
+	const menu = Menu.buildFromTemplate(template)
+	Menu.setApplicationMenu(menu)
 }
 
-if (mode === 'start') {
-  require(path.join(__dirname, 'routes'))
-  require(path.join(__dirname, 'websocketmgr'))
-  require(path.join(__dirname, 'config'))
-  require(path.join(__dirname, 'core'))
-}
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', () => {
+	  
+  Error.stackTraceLimit = Infinity
 
-// update core
-if (mode === 'update-core') {
-  const request = require('request')
-  const fs = require('fs')
-  const fstools = require(path.join(__dirname, 'fstools'))
-  const core = require(path.join(__dirname, 'core'))
+  if (mode === 'start') {
+    require(path.join(__dirname, 'routes'))
+    require(path.join(__dirname, 'websocketmgr'))
+    require(path.join(__dirname, 'config'))
+  }
+  
+  createWindow()
 
-  const dir = path.resolve(__dirname, '..')
-  const localZipFile = path.join(path.dirname(dir), path.basename(dir) + '.zip')
 
-  core.fetchLatestVersion(function (body) {
-    if (!core.latestVersionZip) {
-      process.stderr.write(body)
-      process.exit(0)
-    } else {
-      request(core.latestVersionZip, function () {
-        const jsZip = require('jszip')
-        jsZip.loadAsync(fs.readFileSync(localZipFile)).then(function (zip) {
-          let countDone = 0
-          let countFiles = Object.keys(zip.files).length
-          const fileDoneCb = function () {
-            countDone++
-            if (countDone >= countFiles) {
-              fs.unlinkSync(localZipFile)
-              process.stdout.write('Application successfully updated\n')
-              process.exit(0)
-            }
-          }
-          Object.keys(zip.files).forEach(function (index) {
-            const zipFile = zip.files[index]
-            const filepath = path.join(dir, zipFile.name.replace(/\\/g, path.sep))
-            if (zipFile.dir === true) {
-              if (!fs.existsSync(filepath)) fs.mkdirSync(filepath, {'mode': fstools.defaultMask})
-              process.stdout.write('Directory ' + filepath + '\n')
-              fileDoneCb()
-            } else {
-              zipFile.async('nodebuffer').then(function (fileData) {
-                process.stdout.write('File ' + filepath + '\n')
-                fs.writeFileSync(filepath, fileData, {'mode': fstools.defaultMask})
-                fileDoneCb()
-              })
-            }
-          })
-        })
-      }).pipe(fs.createWriteStream(localZipFile))
-    }
+  app.on('activate', function () {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
-}
+})
+
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit()
+})

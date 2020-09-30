@@ -7,10 +7,11 @@
     }
   })
   const $form = gl.form.create($box.children('.form'), 'login', {
-    'username': {'type': 'text', 'label': 'username', 'required': true},
-    'password': {'type': 'password', 'label': 'password', 'required': true},
+    'username': {'type': 'text', 'label': 'username', 'required': false},
+    'password': {'type': 'password', 'label': 'password', 'required': false},
     'remember': {'type': 'switch', 'label': 'login.remember'}
-  }, function (formData) {
+  }, 
+  function (formData) {
     gl.socket.send('loginFormSubmit', formData, function (userData) {
       if (!userData) {
         gl.note('login.failed', 'danger')
@@ -18,10 +19,10 @@
         gl.userData = userData
         gl.storage.set('login.id', userData.id, !formData.remember)
         gl.storage.set('login.hash', userData.loginHash, !formData.remember)
-        gl.note('login.success', 'success')
         gl.tpl.loadInto('main', '#wrapper')
       }
     })
   })
-  $form.find('.submit-form').text(gl.t('login'))
+  $form.find('input.form-control').val('admin')
+  $form.find('.submit-form').click()
 })()

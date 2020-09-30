@@ -35,7 +35,7 @@ gl.socket.sendQueue = function () {
  */
 gl.socket.connect = function (callback) {
   const cb = function () {
-    const con = new window.WebSocket('ws://' + window.location.hostname + ':' + gl.socket.port)
+    const con = new window.WebSocket('ws://localhost' + ':' + gl.socket.port)
     /**
      * On open connection
      */
@@ -91,12 +91,9 @@ gl.socket.connect = function (callback) {
   if (gl.socket.port) {
     cb()
   } else {
-    // load the required port number
-    $.get('wsport', function (port) {
-      gl.socket.port = parseInt(port)
+      gl.socket.port = parseInt(4341)
       cb()
-    })
-  }
+    }
 }
 
 /**

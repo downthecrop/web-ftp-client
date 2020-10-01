@@ -44,11 +44,14 @@
       
       // Async message handler
       ipcRenderer.on('asynchronous-reply', (event, arg) => {
-         if (arg=="About"){
+         if (arg=="about"){
 			console.log('about')
 			$tpl = $('.template-menu-top')
-			$tpl.trigger('display-about');}
-      })
+			$tpl.trigger('display-about');
+		} else if (arg=="servermanage"){
+			$(document).trigger('display-splitbox', ['servermanager','Server Manager']);
+		}
+	})
       // Async message sender
       ipcRenderer.send('asynchronous-message', 'async ping')
    </script>

@@ -37,13 +37,13 @@ function createWindow () {
     submenu: [
       {
         label: 'Server Manager',
-        accelerator: 'FrankerZ',
-	      click: () => mainWindow.webContents.send('asynchronous-reply', 'FrankerZ'),
+        accelerator: '',
+	      click: () => mainWindow.webContents.send('asynchronous-reply', 'servermanage'),
 	  },
     {
         label: 'About',
         accelerator: '',
-        click: () => mainWindow.webContents.send('asynchronous-reply', 'About'),
+        click: () => mainWindow.webContents.send('asynchronous-reply', 'about'),
       },
       {
         label: 'Paste',

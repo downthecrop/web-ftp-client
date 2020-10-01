@@ -248,6 +248,13 @@ $(function () {
   // template load trigger
   $(document).on('click', '.template-load-trigger[data-template]', function () {
     gl.tpl.loadInto($(this).attr('data-template'), $(this).attr('data-container'))
+	console.log("template: "+$(this).attr('data-template')+" container: "+$(this).attr('data-container'));
+  })
+  
+  // splitbox tab load trigger
+  $(document).on('display-splitbox', function (event, datatemplate, tabname) {
+	gl.splitbox.tabAdd(datatemplate, {}, tabname).trigger('click')
+    gl.splitbox.tabSave()
   })
 
   // splitbox tab delete trigger
@@ -258,7 +265,8 @@ $(function () {
 
   // splitbox tab load trigger
   $(document).on('click', '.splitbox-tab-load-trigger[data-template]', function () {
-    gl.splitbox.tabAdd($(this).attr('data-template'), {}, $(this).attr('data-translate-tab')).trigger('click')
+    console.log("template: "+$(this).attr('data-template')+" container: "+$(this).attr('data-container'));
+	gl.splitbox.tabAdd($(this).attr('data-template'), {}, $(this).attr('data-translate-tab')).trigger('click')
     gl.splitbox.tabSave()
   })
 

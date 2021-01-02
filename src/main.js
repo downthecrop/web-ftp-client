@@ -40,10 +40,15 @@ function createWindow () {
         accelerator: '',
 	      click: () => mainWindow.webContents.send('asynchronous-reply', 'servermanage'),
 	  },
-    {
+      {
         label: 'About',
         accelerator: '',
         click: () => mainWindow.webContents.send('asynchronous-reply', 'about'),
+      },
+      {
+        label: 'Settings',
+        accelerator: '',
+        click: () => mainWindow.webContents.send('asynchronous-reply', 'settings'),
       },
       {
         label: 'Paste',

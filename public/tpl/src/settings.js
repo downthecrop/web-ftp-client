@@ -25,4 +25,10 @@
     })
   }
   loadForm()
+
+  $tpl.on('click', '.theme-toggle', function () {
+      console.log("clicked")
+    gl.loadTheme(gl.storage.get('theme') === 'dark' ? 'light' : 'dark')
+  })
+
 })()

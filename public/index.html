@@ -1,58 +1,66 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <script>window.$ = window.jQuery = require('jquery');</script>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <meta name="format-detection" content="telephone=no">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-      <link rel="stylesheet" type="text/css" href="stylesheets/lib/bootstrap-select.min.css">
-      <link rel="stylesheet" type="text/css" href="stylesheets/dist/general.css">
-      <link rel="shortcut icon" href="images/logo.png" type="image/png">
-      <script type="text/javascript" src="scripts/lib/jquery-3.2.1.min.js"></script>
-      <script type="text/javascript" src="scripts/lib/jquery-ui.min.js"></script>
-      <script type="text/javascript" src="scripts/lib/jquery.serializejson.min.js"></script>
-      <script type="text/javascript" src="scripts/lib/jquery.tablesorter.min.js"></script>
-      <script type="text/javascript" src="scripts/lib/bootstrap.min.js"></script>
-      <script type="text/javascript" src="scripts/lib/bootstrap-select.min.js"></script>
-      <script type="text/javascript" src="scripts/lib/bootstrap-notify.min.js"></script>
-      <script type="text/javascript" src="scripts/dist/global.js"></script>
-      <script type="text/javascript" src="scripts/dist/storage.js"></script>
-      <script type="text/javascript" src="scripts/dist/lang.js"></script>
-      <script type="text/javascript" src="scripts/dist/lang.values.js"></script>
-      <script type="text/javascript" src="scripts/dist/socket.js"></script>
-      <script type="text/javascript" src="scripts/dist/tpl.js"></script>
-      <script type="text/javascript" src="scripts/dist/form.js"></script>
-      <script type="text/javascript" src="scripts/dist/splitbox.js"></script>
-      <title>Web FTP Client</title>
-      <script type="application/javascript">
-         gl.loadTheme(gl.storage.get('theme') || 'light')
-      </script>
-   </head>
-   <body>
-      <script>
-         if (window.process && window.process !== undefined) { 
-           document.body.innerHTML += "<div class='loader'></div>"
-           document.body.innerHTML += "<div id='wrapper'></div>"
-         }
-      </script>
-   </body>
-   <script>
-      const {ipcRenderer} = require('electron')
-      // Synchronous message emmiter and handler
-      console.log(ipcRenderer.sendSync('synchronous-message', 'sync ping')) 
-      
-      // Async message handler
-      ipcRenderer.on('asynchronous-reply', (event, arg) => {
-         if (arg=="about"){
-			console.log('about')
-			$tpl = $('.template-menu-top')
-			$tpl.trigger('display-about');
-		} else if (arg=="servermanage"){
-			$(document).trigger('display-splitbox', ['servermanager','Server Manager']);
-		}
-	})
-      // Async message sender
-      ipcRenderer.send('asynchronous-message', 'async ping')
-   </script>
+
+<head>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="stylesheets/lib/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/dist/general.css">
+    <link rel="shortcut icon" href="images/logo.png" type="image/png">
+    <script type="text/javascript" src="scripts/lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery.serializejson.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/bootstrap-notify.min.js"></script>
+    <script type="text/javascript" src="scripts/dist/global.js"></script>
+    <script type="text/javascript" src="scripts/dist/storage.js"></script>
+    <script type="text/javascript" src="scripts/dist/lang.js"></script>
+    <script type="text/javascript" src="scripts/dist/lang.values.js"></script>
+    <script type="text/javascript" src="scripts/dist/socket.js"></script>
+    <script type="text/javascript" src="scripts/dist/tpl.js"></script>
+    <script type="text/javascript" src="scripts/dist/form.js"></script>
+    <script type="text/javascript" src="scripts/dist/splitbox.js"></script>
+    <title>Web FTP Client</title>
+    <script type="application/javascript">
+        gl.loadTheme(gl.storage.get('theme') || 'light')
+    </script>
+</head>
+
+<body>
+    <script>
+        if (window.process && window.process !== undefined) {
+            document.body.innerHTML += "<div class='loader'></div>"
+            document.body.innerHTML += "<div id='wrapper'></div>"
+        }
+    </script>
+</body>
+<script>
+    const { ipcRenderer } = require('electron')
+    // Synchronous message emmiter and handler
+    console.log(ipcRenderer.sendSync('synchronous-message', 'sync ping'))
+
+    // Async message handler
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+        if (arg == "about") {
+            console.log('about')
+            $tpl = $('.template-menu-top')
+            $tpl.trigger('display-about');
+        } 
+        else if (arg == "servermanage") {
+            $(document).trigger('display-splitbox', ['servermanager', 'Server Manager']);
+        }
+        else if (arg == "settings") {
+            $(document).trigger('display-splitbox', ['settings', 'Settings']);
+        }
+    })
+    // Async message sender
+    ipcRenderer.send('asynchronous-message', 'async ping')
+</script>
+
 </html>

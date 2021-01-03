@@ -49,12 +49,7 @@ function createWindow () {
         label: 'Settings',
         accelerator: '',
         click: () => mainWindow.webContents.send('asynchronous-reply', 'settings'),
-      },
-      {
-        label: 'Paste',
-        accelerator: 'CommandOrControl+V',
-        role: 'paste',
-      },
+      }
     ]
   }
 ];

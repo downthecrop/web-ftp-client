@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+    var fileGlob
     const $tpl = $('.template-serverbrowser')
     const tabParams = gl.splitbox.tabActive.data('params')
     const $contextmenuLocal = $tpl.find('.contextmenu')
@@ -28,9 +29,27 @@
     var dragContext;
 
     document.addEventListener('mousedown', function (event) {
+        let selected = $tpl.find("tr.entry.active")
         startX = event.pageX;
         startY = event.pageY;
-        checkMouse = setInterval(clickOrDrag, 100, event);
+        if (event.target.id === "dragable"){
+            if (event.target.tagName == "SPAN"){
+                console.log(fileGlob)
+                console.log("span path")
+                console.log(event.path)
+                console.log("row index = "+event.path[2].rowIndex)
+                console.log(event.path[2].textContent)
+                console.log(selected)
+            }
+            else{
+                console.log("td path")
+                console.log(event.path)
+                console.log("row index = "+event.path[1].rowIndex)
+                console.log(event.path[1].textContent)
+                console.log(selected)
+            }
+            checkMouse = setInterval(clickOrDrag, 100, event);
+        }
     });
 
     document.addEventListener('mousemove', (event) => {
@@ -59,6 +78,10 @@
     }
 
     document.addEventListener('mouseup', function (event) {
+        if(drag){
+            console.log("Moused up on target")
+            console.log(event.target.innerText)
+        }
         console.log("mouseup")
         drag = false;
         clearInterval(checkMouse)
@@ -76,6 +99,7 @@
      * @param {[]} files
      */
     const buildFilelist = function (type, $container, files) {
+        fileGlob = files
         $container.html('')
         const $table = $tpl.find('.boilerplate.table-files').clone()
         $table.attr('data-id', type)
@@ -100,6 +124,7 @@
         $table.find('table').tablesorter({
             textExtraction: function (node) {
                 let n = $(node)
+                console.log((n.attr('data-sortvalue') || n.text()).toLowerCase())
                 return (n.attr('data-sortvalue') || n.text()).toLowerCase()
             },
             'sortList': [[0, 0]]

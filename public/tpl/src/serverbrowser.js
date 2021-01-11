@@ -28,16 +28,15 @@
     var dragContext;
 
     document.addEventListener('mousedown', function (event) {
-        let element;
         startX = event.pageX;
         startY = event.pageY;
 
         if (event.target.id === "dragable") {
             //Set Active to the clicked td element/span parent td
             if (event.target.tagName == "SPAN") {
-                element = event.path[2].className += " active"
+                event.path[2].className += " active"
             } else {
-                element = event.path[1].className += " active"
+                event.path[1].className += " active"
             }
 
             let selected = $tpl.find("tr.entry.active")
@@ -78,8 +77,21 @@
 
     document.addEventListener('mouseup', function (event) {
         if (drag) {
+            let dragDest
             console.log("Moused up on target")
             console.log(event.target.innerText)
+            if (event.target.tagName == "SPAN") {
+                event.path[2].className += " dest"
+            } else {
+                event.path[1].className += " dest"
+            }
+            dragDest = $tpl.find("tr.entry.dest")
+            console.log(dragDest.data('file'))
+            gl.modalConfirm(gl.t('confirm.drag.files'), function (result) {
+                if (result === true) {
+                    console.log("True")
+                }
+            })
         }
         console.log("mouseup")
         drag = false;

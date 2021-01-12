@@ -76,15 +76,22 @@
     }
 
     document.addEventListener('mouseup', function (event) {
-        if (drag) {
+        clearInterval(checkMouse)
+        clearInterval(dragContext)
+        if (drag && (event.path[2].className === "entry" || event.path[1].className === "entry" )) {
+            drag = false
             let dragDest
+            let elm
             console.log("Moused up on target")
-            console.log(event.target.innerText)
+
             if (event.target.tagName == "SPAN") {
                 event.path[2].className += " dest"
-            } else {
+                elm = 2
+            } else if (event.path[1].className === "entry") {
                 event.path[1].className += " dest"
+                elm = 1
             }
+
             dragDest = $tpl.find("tr.entry.dest")
             console.log(dragDest.data('file'))
             gl.modalConfirm(gl.t('confirm.drag.files'), function (result) {
@@ -92,11 +99,8 @@
                     console.log("True")
                 }
             })
+            console.log(event.path[elm].className = "entry")
         }
-        console.log("mouseup")
-        drag = false;
-        clearInterval(checkMouse)
-        clearInterval(dragContext)
     })
 
     $local.find('.files').on("mousedown", function (caller) {

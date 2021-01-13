@@ -19,17 +19,12 @@
     const $contextmenu = $([$contextmenuLocal[0], $contextmenuServer[0], $contextmenuBoth[0]])
 
     const delta = 6;
-    let startX;
-    let startY;
     let currentX;
     let currentY;
     let drag = false
     var checkMouse;
-    
-    document.addEventListener('mousedown', function (event) {
-        startX = event.pageX;
-        startY = event.pageY;
 
+    document.addEventListener('mousedown', function (event) {
         if (event.target.id === "dragable") {
             //Set Active to the clicked td element/span parent td
             if (event.target.tagName == "SPAN") {
@@ -37,14 +32,6 @@
             } else {
                 event.path[1].className += " active"
             }
-
-            let selected = $tpl.find("tr.entry.active")
-
-            let files = []
-            selected.each(function () {
-                files.push($(this).data('file'))
-            })
-            console.log(files)
             checkMouse = setInterval(clickOrDrag, 100, event);
         }
     });
@@ -69,13 +56,15 @@
     }
 
     document.addEventListener('mouseup', function (event) {
-        clearInterval(checkMouse)
-        if (drag && (event.path[2].className === "entry" || event.path[1].className === "entry" )) {
+        console.log(event.path)
+        console.log(event.path[0].className)
+        if (drag && (event.path[2].className === "entry"
+            || event.path[1].className === "entry")
+            || event.path[0].className === "right server") {
             drag = false
-            let dragDest
             let elm
-            console.log("Moused up on target")
 
+            //Tag mouse up element to get its file data
             if (event.target.tagName == "SPAN") {
                 event.path[2].className += " dest"
                 elm = 2
@@ -84,15 +73,37 @@
                 elm = 1
             }
 
-            dragDest = $tpl.find("tr.entry.dest")
-            console.log(dragDest.data('file'))
+            if (event.path[0].className != "right server"){
+                let dragDest = $tpl.find("tr.entry.dest")
+            }
+            //console.log(dragDest.data('file'))
+
+            let selected = $tpl.find("tr.entry.active")
+
+            let files = []
+            selected.each(function () {
+                files.push($(this).data('file'))
+            })
+
             gl.modalConfirm(gl.t('confirm.drag.files'), function (result) {
                 if (result === true) {
-                    console.log("True")
+                    gl.socket.send('addToTransferQueue', {
+                        'localDirectory': $localDirectoryInput.val(),
+                        'serverDirectory': $serverDirectoryInput.val(),
+                        'files': files,
+                        'mode': "upload",
+                        'server': tabParams.server,
+                        'recursive': true,
+                        'forceTransfer': 1,
+                        'filter': null,
+                        'flat': null,
+                        'replace': 'never'
+                    })
                 }
             })
-            event.path[elm].className = "entry"
+            
         }
+        clearInterval(checkMouse)
     })
 
     /**
@@ -246,6 +257,8 @@
         if (!filter.length) {
             filter = null
         }
+        console.log($(this).attr('data-mode'))
+        console.log($currentCm.find('.replace select').val())
         gl.socket.send('addToTransferQueue', {
             'localDirectory': $localDirectoryInput.val(),
             'serverDirectory': $serverDirectoryInput.val(),

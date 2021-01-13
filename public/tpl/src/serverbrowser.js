@@ -25,8 +25,7 @@
     let currentY;
     let drag = false
     var checkMouse;
-    var dragContext;
-
+    
     document.addEventListener('mousedown', function (event) {
         startX = event.pageX;
         startY = event.pageY;
@@ -69,15 +68,8 @@
         }
     }
 
-    function dragContextf(fileName) {
-        if (drag) {
-            console.log(fileName)
-        }
-    }
-
     document.addEventListener('mouseup', function (event) {
         clearInterval(checkMouse)
-        clearInterval(dragContext)
         if (drag && (event.path[2].className === "entry" || event.path[1].className === "entry" )) {
             drag = false
             let dragDest
@@ -99,12 +91,8 @@
                     console.log("True")
                 }
             })
-            console.log(event.path[elm].className = "entry")
+            event.path[elm].className = "entry"
         }
-    })
-
-    $local.find('.files').on("mousedown", function (caller) {
-        dragContext = setInterval(dragContextf, 100, caller.target.innerText);
     })
 
     /**

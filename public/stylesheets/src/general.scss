@@ -1,3 +1,17 @@
+::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
+}
+::-webkit-scrollbar-track {
+    background: #383838 !important;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #cfc9c5 !important;
+    border: 1px solid #1a1a1a !important;
+    border-radius: 1px !important;
+}
+
+
 @mixin glyphicon {
     font-family: 'Glyphicons Halflings';
     font-weight: normal;
@@ -171,7 +185,7 @@ html {
         .center {
             position: relative;
             width: 5px;
-            background: #e5e5e5;
+            background: rgba(0, 0, 0, 0.2);
             cursor: w-resize;
             z-index: 1;
         }

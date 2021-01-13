@@ -47,7 +47,7 @@
         }
       },
       'keyfile': {
-        'type': 'textarea',
+        'type': 'password',
         'label': 'server.auth.keyfile',
         'description': 'server.auth.keyfile.description',
         'showIf': function (fields) {

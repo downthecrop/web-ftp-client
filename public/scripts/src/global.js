@@ -137,12 +137,14 @@ gl.hideContextmenu = function () {
  * @param {event} ev
  */
 gl.showContextmenu = function ($container, ev) {
-  gl.hideContextmenu()
   $container.addClass('show')
+  if ($container.length > 1)
+    $container[1].className = "contextmenu"
   $container.offset({
     left: ev.pageX,
     top: ev.pageY
   })
+  console.log($container)
   const ww = $(window).width()
   const wh = $(window).height()
   $container.removeClass('stick-right stick-bottom')

@@ -1,4 +1,4 @@
-'use strict';
+    'use strict';
 (function () {
     const $tpl = $('.template-serverbrowser')
     const tabParams = gl.splitbox.tabActive.data('params')

@@ -10,11 +10,11 @@ const logs = {}
  * @return []
  */
 logs.get = function () {
-  const logs = db.get('logs').cloneDeep().value()
-  if (!logs.messages) {
-    return []
-  }
-  return logs.messages
+    const logs = db.get('logs').cloneDeep().value()
+    if (!logs.messages) {
+        return []
+    }
+    return logs.messages
 }
 
 /**
@@ -25,26 +25,26 @@ logs.get = function () {
  * @param {string=} type
  */
 logs.log = function (server, message, params, type) {
-  const logsDb = db.get('logs').cloneDeep().value()
-  if (!logsDb.messages) {
-    logsDb.messages = []
-  }
+    const logsDb = db.get('logs').cloneDeep().value()
+    if (!logsDb.messages) {
+        logsDb.messages = []
+    }
 
-  logsDb.messages = logsDb.messages.slice(-50)
-  const msg = {
-    'server': server,
-    'serverName': server ? require(path.join(__dirname, 'server')).get(server).getServerData().name : null,
-    'time': new Date(),
-    'message': message,
-    'params': params,
-    'type': type || 'info'
-  }
-  logsDb.messages.push(msg)
-  db.get('logs').set('messages', logsDb.messages).write()
-  // send to all listeners
-  for (let i = 0; i < logs.listeners.length; i++) {
-    logs.listeners[i].bulkSend('log', msg)
-  }
+    logsDb.messages = logsDb.messages.slice(-50)
+    const msg = {
+        'server': server,
+        'serverName': server ? require(path.join(__dirname, 'server')).get(server).getServerData().name : null,
+        'time': new Date(),
+        'message': message,
+        'params': params,
+        'type': type || 'info'
+    }
+    logsDb.messages.push(msg)
+    db.get('logs').set('messages', logsDb.messages).write()
+    // send to all listeners
+    for (let i = 0; i < logs.listeners.length; i++) {
+        logs.listeners[i].bulkSend('log', msg)
+    }
 }
 
 /**
@@ -53,12 +53,12 @@ logs.log = function (server, message, params, type) {
  * @param {Error} err
  */
 logs.logError = function (server, err) {
-  const e = new Error(err.message)
-  let msg = e.message
-  if (require(path.join(__dirname, 'config.js')).development) {
-    msg += ' | STACK: ' + e.stack
-  }
-  logs.log(server, msg, null, 'error')
+    const e = new Error(err.message)
+    let msg = e.message
+    if (require(path.join(__dirname, 'config.js')).development) {
+        msg += ' | STACK: ' + e.stack
+    }
+    logs.log(server, msg, null, 'error')
 }
 
 /**

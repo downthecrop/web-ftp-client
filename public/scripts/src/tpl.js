@@ -13,7 +13,7 @@ gl.tpl = {}
  * @return jQuery
  */
 gl.tpl.reload = function (name, callback) {
-  gl.tpl.reloadContainer($('.template').filter('[data-name=\'' + name + '\']'), callback)
+    gl.tpl.reloadContainer($('.template').filter('[data-name=\'' + name + '\']'), callback)
 }
 
 /**
@@ -23,7 +23,7 @@ gl.tpl.reload = function (name, callback) {
  * @return jQuery
  */
 gl.tpl.reloadContainer = function (container, callback) {
-  gl.tpl.loadInto(container.attr('data-name'), container, callback)
+    gl.tpl.loadInto(container.attr('data-name'), container, callback)
 }
 
 /**
@@ -34,13 +34,13 @@ gl.tpl.reloadContainer = function (container, callback) {
  * @return jQuery
  */
 gl.tpl.loadInto = function (name, container, callback) {
-  gl.tpl.load(name, function ($tpl) {
-    if (!gl.userData || !gl.userData.admin) {
-      $tpl.find('.require-admin').remove()
-    }
-    $(container).html($tpl)
-    if (callback) callback($tpl)
-  })
+    gl.tpl.load(name, function ($tpl) {
+        if (!gl.userData || !gl.userData.admin) {
+            $tpl.find('.require-admin').remove()
+        }
+        $(container).html($tpl)
+        if (callback) callback($tpl)
+    })
 }
 
 /**
@@ -50,17 +50,17 @@ gl.tpl.loadInto = function (name, container, callback) {
  * @return jQuery
  */
 gl.tpl.load = function (name, callback) {
-  const $tpl = $('<div class="template">')
-  $tpl.attr('data-name', name)
-  $tpl.addClass('template-' + name)
-  const cb = function (htmlData) {
-    $tpl.append(htmlData)
-    gl.lang.replaceInHtml($tpl)
-    if (callback) callback($tpl)
-    // load the script to that
-    $.getScript('./tpl/dist/' + name + '.js')
-  }
-  $.get('./tpl/' + name + '.html', function (htmlData) {
-    cb(htmlData)
-  })
+    const $tpl = $('<div class="template">')
+    $tpl.attr('data-name', name)
+    $tpl.addClass('template-' + name)
+    const cb = function (htmlData) {
+        $tpl.append(htmlData)
+        gl.lang.replaceInHtml($tpl)
+        if (callback) callback($tpl)
+        // load the script to that
+        $.getScript('./tpl/dist/' + name + '.js')
+    }
+    $.get('./tpl/' + name + '.html', function (htmlData) {
+        cb(htmlData)
+    })
 }

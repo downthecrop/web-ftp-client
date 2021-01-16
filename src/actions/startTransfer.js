@@ -18,7 +18,7 @@ action.requireUser = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  queue.transferNext()
+    queue.transferNext()
 }
 
 module.exports = action

@@ -20,14 +20,14 @@ action.requireAdmin = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  if (os.platform() !== 'linux' || config.development) {
-    callback(false)
-    return
-  }
-  const dir = path.join(__dirname, '../..')
-  exec('cd ' + dir + ' && ./wfc update', null, function () {
-    callback(true)
-  })
+    if (os.platform() !== 'linux' || config.development) {
+        callback(false)
+        return
+    }
+    const dir = path.join(__dirname, '../..')
+    exec('cd ' + dir + ' && ./wfc update', null, function () {
+        callback(true)
+    })
 }
 
 module.exports = action

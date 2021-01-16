@@ -18,10 +18,10 @@ action.requireUser = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  callback(queue.getEntries())
-  // add the user to the logs listeners
-  // will receive messages when something in the queue changes
-  queue.listeners.push(user)
+    callback(queue.getEntries())
+    // add the user to the logs listeners
+    // will receive messages when something in the queue changes
+    queue.listeners.push(user)
 }
 
 module.exports = action

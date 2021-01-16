@@ -18,7 +18,7 @@ action.requireAdmin = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  callback(db.get('users').cloneDeep().value())
+    callback(db.get('users').cloneDeep().value())
 }
 
 module.exports = action

@@ -18,12 +18,12 @@ action.requireUser = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  FtpServer.get(message.server, function (ftpServer) {
-    if (ftpServer) {
-      ftpServer.disconnect()
-    }
-  }, true)
-  callback()
+    FtpServer.get(message.server, function (ftpServer) {
+        if (ftpServer) {
+            ftpServer.disconnect()
+        }
+    }, true)
+    callback()
 }
 
 module.exports = action

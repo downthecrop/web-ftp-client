@@ -8,42 +8,42 @@ const logs = require(path.join(__dirname, 'logs'))
  * Server container
  * @param {string} id
  */
-function Server (id) {
-  /** @type {string} */
-  this.id = id
+function Server(id) {
+    /** @type {string} */
+    this.id = id
 
-  /**
-   * Get server data
-   * @return object
-   */
-  this.getServerData = function () {
-    return db.get('servers').get(this.id).cloneDeep().value()
-  }
+    /**
+     * Get server data
+     * @return object
+     */
+    this.getServerData = function () {
+        return db.get('servers').get(this.id).cloneDeep().value()
+    }
 
-  /**
-   * Set server data
-   * @param {object} data
-   */
-  this.setServerData = function (data) {
-    db.get('servers').set(this.id, data).write()
-  }
+    /**
+     * Set server data
+     * @param {object} data
+     */
+    this.setServerData = function (data) {
+        db.get('servers').set(this.id, data).write()
+    }
 
-  /**
-   * Log a message
-   * @param {string} message
-   * @param {object=} params
-   * @param {string=} type
-   */
-  this.log = function (message, params, type) {
-    logs.log(this.id, message, params, type)
-  }
-  /**
-   * Log an error message
-   * @param {Error} err
-   */
-  this.logError = function (err) {
-    logs.logError(this.id, err)
-  }
+    /**
+     * Log a message
+     * @param {string} message
+     * @param {object=} params
+     * @param {string=} type
+     */
+    this.log = function (message, params, type) {
+        logs.log(this.id, message, params, type)
+    }
+    /**
+     * Log an error message
+     * @param {Error} err
+     */
+    this.logError = function (err) {
+        logs.logError(this.id, err)
+    }
 }
 
 /**
@@ -52,12 +52,12 @@ function Server (id) {
  * @return Server
  */
 Server.get = function (id) {
-  if (typeof Server.instances[id] !== 'undefined') {
-    return Server.instances[id]
-  }
-  const server = new Server(id)
-  Server.instances[id] = server
-  return server
+    if (typeof Server.instances[id] !== 'undefined') {
+        return Server.instances[id]
+    }
+    const server = new Server(id)
+    Server.instances[id] = server
+    return server
 }
 
 /** @type {object<string, Server>} */

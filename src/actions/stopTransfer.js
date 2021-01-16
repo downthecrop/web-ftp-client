@@ -18,11 +18,11 @@ action.requireUser = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  // stop queue for each server
-  for (let i in FtpServer.instances) {
-    FtpServer.instances[i].server.log('log.server.queue.stopped')
-    FtpServer.instances[i].stopTransfers()
-  }
+    // stop queue for each server
+    for (let i in FtpServer.instances) {
+        FtpServer.instances[i].server.log('log.server.queue.stopped')
+        FtpServer.instances[i].stopTransfers()
+    }
 }
 
 module.exports = action

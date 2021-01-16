@@ -19,17 +19,17 @@ action.requireAdmin = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  FtpServer.get(message.serverId, function (ftpServer) {
-    if (ftpServer) {
-      ftpServer.stopTransfers()
-      ftpServer.deleteQueues()
-      ftpServer.disconnect()
-    }
-    let servers = db.get('servers').value()
-    delete servers[message.serverId]
-    db.get('servers').setState(servers)
-    callback()
-  }, true)
+    FtpServer.get(message.serverId, function (ftpServer) {
+        if (ftpServer) {
+            ftpServer.stopTransfers()
+            ftpServer.deleteQueues()
+            ftpServer.disconnect()
+        }
+        let servers = db.get('servers').value()
+        delete servers[message.serverId]
+        db.get('servers').setState(servers)
+        callback()
+    }, true)
 }
 
 module.exports = action

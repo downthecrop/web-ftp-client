@@ -21,47 +21,47 @@ action.requireUser = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  const formData = message.formData
-  if (formData.username) {
-    const users = db.get('users').cloneDeep().value()
-    let storedData = {}
-    if (message.id) {
-      storedData = users[message.id]
-    } else {
-      storedData = {
-        'id': db.getNextId(),
-        'loginHash': hash.random(32)
-      }
-      delete formData.loginHash
-    }
-    storedData.passwordHash = hash.saltedMd5(formData.password)
-    delete storedData.password
-
-    extend(true, storedData, formData)
-
-    let hasAdmin = false
-    for (let i in users) {
-      if (users[i].admin) {
-        hasAdmin = true
-        break
-      }
-    }
-
-    if (!hasAdmin) {
-      callback(false)
-    } else {
-      // simply merging
-      // data from form into data object
-      db.get('users').set(storedData.id, storedData).write()
-      // disconnect the users that have been edited
-      for (let i = 0; i < WebSocketUser.instances.length; i++) {
-        if (WebSocketUser.instances[i].userData.id === storedData.id) {
-          WebSocketUser.instances[i].socket.close()
+    const formData = message.formData
+    if (formData.username) {
+        const users = db.get('users').cloneDeep().value()
+        let storedData = {}
+        if (message.id) {
+            storedData = users[message.id]
+        } else {
+            storedData = {
+                'id': db.getNextId(),
+                'loginHash': hash.random(32)
+            }
+            delete formData.loginHash
         }
-      }
-      callback(true)
+        storedData.passwordHash = hash.saltedMd5(formData.password)
+        delete storedData.password
+
+        extend(true, storedData, formData)
+
+        let hasAdmin = false
+        for (let i in users) {
+            if (users[i].admin) {
+                hasAdmin = true
+                break
+            }
+        }
+
+        if (!hasAdmin) {
+            callback(false)
+        } else {
+            // simply merging
+            // data from form into data object
+            db.get('users').set(storedData.id, storedData).write()
+            // disconnect the users that have been edited
+            for (let i = 0; i < WebSocketUser.instances.length; i++) {
+                if (WebSocketUser.instances[i].userData.id === storedData.id) {
+                    WebSocketUser.instances[i].socket.close()
+                }
+            }
+            callback(true)
+        }
     }
-  }
 }
 
 module.exports = action

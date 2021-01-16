@@ -6,12 +6,12 @@ const app = express()
 const config = require(path.join(__dirname, 'config'))
 
 const routes = {
-  'file': null
+    'file': null
 }
 
 // output the required ws port number
 app.get('/wsport', function (req, res) {
-  res.send((config.port + 1).toString())
+    res.send((config.port + 1).toString())
 })
 
 // whole public folder

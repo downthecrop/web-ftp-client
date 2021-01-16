@@ -20,21 +20,21 @@ action.requireUser = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  if (message.type === 'server') {
-    FtpServer.get(message.serverId, function (server) {
-      if (!server) {
+    if (message.type === 'server') {
+        FtpServer.get(message.serverId, function (server) {
+            if (!server) {
+                callback()
+                return
+            }
+            server.mkdir(message.directory + '/' + message.directoryName, function (list) {
+                callback()
+            })
+        })
+    }
+    if (message.type === 'local') {
+        fs.mkdirSync(message.directory + '/' + message.directoryName, fstools.defaultMask)
         callback()
-        return
-      }
-      server.mkdir(message.directory + '/' + message.directoryName, function (list) {
-        callback()
-      })
-    })
-  }
-  if (message.type === 'local') {
-    fs.mkdirSync(message.directory + '/' + message.directoryName, fstools.defaultMask)
-    callback()
-  }
+    }
 }
 
 module.exports = action

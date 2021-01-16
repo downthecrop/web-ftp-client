@@ -18,10 +18,10 @@ action.requireUser = true
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  callback(logs.get())
-  // add the user to the logs listeners
-  // will receive messages when new logs have been added
-  logs.listeners.push(user)
+    callback(logs.get())
+    // add the user to the logs listeners
+    // will receive messages when new logs have been added
+    logs.listeners.push(user)
 }
 
 module.exports = action

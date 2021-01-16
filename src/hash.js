@@ -14,7 +14,7 @@ const hash = {}
  * @returns {string}
  */
 hash.random = function (length) {
-  return crypto.randomBytes(length / 2).toString('hex')
+    return crypto.randomBytes(length / 2).toString('hex')
 }
 
 /**
@@ -23,8 +23,8 @@ hash.random = function (length) {
  * @returns {string}
  */
 hash.saltedMd5 = function (str) {
-  const db = require(path.join(__dirname, 'db'))
-  return crypto.createHash('md5').update(str + '' + db.get('settings').get('salt').value()).digest('hex')
+    const db = require(path.join(__dirname, 'db'))
+    return crypto.createHash('md5').update(str + '' + db.get('settings').get('salt').value()).digest('hex')
 }
 
 module.exports = hash

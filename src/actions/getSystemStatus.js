@@ -19,13 +19,13 @@ action.requireUser = false
  * @param {function} callback
  */
 action.execute = function (user, message, callback) {
-  callback({
-    'installed': db.get('users').size().value() > 0,
-    'latestVersion': '9.9.9',
-    'currentVersion': require(path.join(__dirname, '../../package')).version,
-    'development': require(path.join(__dirname, '../config')).development,
-    'changelog': require('marked')(fs.readFileSync(path.join(__dirname, '../../CHANGELOG.md')).toString())
-  })
+    callback({
+        'installed': db.get('users').size().value() > 0,
+        'latestVersion': '9.9.9',
+        'currentVersion': require(path.join(__dirname, '../../package')).version,
+        'development': require(path.join(__dirname, '../config')).development,
+        'changelog': require('marked')(fs.readFileSync(path.join(__dirname, '../../CHANGELOG.md')).toString())
+    })
 }
 
 module.exports = action

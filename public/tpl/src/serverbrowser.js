@@ -59,8 +59,8 @@
         console.log(event.path)
         console.log(event.path[0].className)
         if (drag && (event.path[2].className === "entry"
-            || event.path[1].className === "entry")
-            || event.path[0].className === "right server") {
+            || event.path[1].className === "entry"
+            || event.path[0].className === "right server")) {
             drag = false
             let elm
 

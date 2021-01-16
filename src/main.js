@@ -6,7 +6,8 @@ const path = require('path')
 const { app, BrowserWindow, dialog, Menu, protocol, ipcMain } = require('electron');
 const fs = require('fs');
 
-let mainWindow, callback;
+let mainWindow
+
 
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log(arg) // prints "ping"
@@ -31,6 +32,7 @@ function createWindow () {
 	})
   mainWindow.loadURL('http://localhost:4340/')
   mainWindow.webContents.openDevTools()
+  function windowSend(a,b){ mainWindow.webContents.send(a, b) }
   const template = [
   {
     label: 'File',
@@ -38,17 +40,22 @@ function createWindow () {
       {
         label: 'Server Manager',
         accelerator: '',
-	      click: () => mainWindow.webContents.send('asynchronous-reply', 'servermanage'),
+	      click: () => windowSend('asynchronous-reply', 'servermanage'),
 	  },
       {
         label: 'About',
         accelerator: '',
-        click: () => mainWindow.webContents.send('asynchronous-reply', 'about'),
+        click: () => windowSend('asynchronous-reply', 'about'),
       },
       {
         label: 'Settings',
         accelerator: '',
-        click: () => mainWindow.webContents.send('asynchronous-reply', 'settings'),
+        click: () => windowSend('asynchronous-reply', 'settings'),
+      },
+      {
+        label: 'Exit',
+        accelerator: '',
+        click: () => app.quit(),
       }
     ]
   }

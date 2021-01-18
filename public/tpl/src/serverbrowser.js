@@ -113,6 +113,7 @@
      * @param {jQuery} $container
      * @param {[]} files
      */
+    const truncate = (input) => input.length > 15 ? `${input.substring(0, 15)}...` : input;
     const buildFilelist = function (type, $container, files) {
         $container.html('')
         const $table = $tpl.find('.boilerplate.table-files').clone()
@@ -127,7 +128,8 @@
             let icon = (file.isDirectory ? 'directory' : 'file')
             $tr.find('.name').attr('data-sortvalue', (file.isDirectory ? 'a' : 'b') + file.filename)
             $tr.find('.name .icon').addClass('icon-' + icon)
-            $tr.find('.name .text').text(file.filename)
+            $tr.find('.name .text').text(truncate(file.filename))
+            $tr.find('.name .text').attr('title', file.filename)
             $tr.find('.size').text(gl.humanFilesize(file.size)).attr('data-sortvalue', file.size)
             $tr.find('.permissions').text(file.permissions)
             $tr.find('.mtime').text(mtime.toLocaleString()).attr('data-sortvalue', mtime.getTime())

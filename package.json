@@ -10,6 +10,7 @@
     "url": "git://github.com/brainfoolong/web-ftp-client.git"
   },
   "dependencies": {
+    "electron-packager": "^15.2.0",
     "express": "^4.15.2",
     "extend": "^3.0.0",
     "ftp": "^0.3.10",

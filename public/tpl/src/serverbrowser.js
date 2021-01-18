@@ -72,10 +72,11 @@
                 event.path[1].className += " dest"
                 elm = 1
             }
-
+            
             if (event.path[0].className != "right server"){
                 let dragDest = $tpl.find("tr.entry.dest")
             }
+            
             //console.log(dragDest.data('file'))
 
             let selected = $tpl.find("tr.entry.active")

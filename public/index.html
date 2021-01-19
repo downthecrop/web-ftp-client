@@ -33,25 +33,18 @@
 </head>
 
 <body>
-    <script>
-        if (window.process && window.process !== undefined) {
-            document.body.innerHTML += "<div class='loader'></div>"
-            document.body.innerHTML += "<div id='wrapper'></div>"
-        }
-    </script>
+    <div class='loader'></div>
+    <div id='wrapper'></div>
 </body>
 <script>
     const { ipcRenderer } = require('electron')
-    // Synchronous message emmiter and handler
-    console.log(ipcRenderer.sendSync('synchronous-message', 'sync ping'))
-
     // Async message handler
     ipcRenderer.on('asynchronous-reply', (event, arg) => {
         if (arg == "about") {
             console.log('about')
             $tpl = $('.template-menu-top')
             $tpl.trigger('display-about');
-        } 
+        }
         else if (arg == "servermanage") {
             $(document).trigger('display-splitbox', ['servermanager', 'Server Manager']);
         }
@@ -59,8 +52,6 @@
             $(document).trigger('display-splitbox', ['settings', 'Settings']);
         }
     })
-    // Async message sender
-    ipcRenderer.send('asynchronous-message', 'async ping')
 </script>
 
 </html>

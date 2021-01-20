@@ -2,7 +2,6 @@
 
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path')
-const fs = require('fs')
 
 let mainWindow
 
@@ -15,7 +14,7 @@ function createWindow() {
         }
     })
     mainWindow.loadURL(path.join(__dirname, '../public/index.html'))
-    //mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
     function windowSend(a, b) { mainWindow.webContents.send(a, b) }
     const menuJ = [
         {
@@ -44,16 +43,12 @@ function createWindow() {
             ]
         }
     ];
-    const menu = Menu.buildFromTemplate(menuJ)
-    Menu.setApplicationMenu(menu)
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menuJ))
 }
 
 app.on('ready', () => {
 
-    require(path.join(__dirname, 'routes'))
     require(path.join(__dirname, 'websocketmgr'))
-    require(path.join(__dirname, 'config'))
-
     createWindow()
 
     app.on('activate', function () {

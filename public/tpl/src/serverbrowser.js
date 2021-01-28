@@ -1,6 +1,7 @@
     'use strict';
 (function () {
     const $tpl = $('.template-serverbrowser')
+    var hiddenFlag = false
     const tabParams = gl.splitbox.tabActive.data('params')
     const $contextmenuLocal = $tpl.find('.contextmenu')
     const $contextmenuServer = $contextmenuLocal.clone()
@@ -191,6 +192,15 @@
                 return
             }
             tabParams.localDirectory = data.currentDirectory
+            if (hiddenFlag){
+                let temp = []
+                for (let i = 0; i < data.files.length; i += 1){
+                    if(data.files[i].filename.charAt(0) != '.'){
+                        temp.push(data.files[i])
+                    }
+                }
+                data.files = temp
+            }
             gl.splitbox.tabSave()
             $localDirectoryInput.val(data.currentDirectory)
             buildFilelist('local', $local.find('.files'), data.files)
@@ -206,6 +216,15 @@
             if (!data) {
                 return
             }
+            if (hiddenFlag){
+                let temp = []
+                for (let i = 0; i < data.files.length; i += 1){
+                    if(data.files[i].filename.charAt(0) != '.'){
+                        temp.push(data.files[i])
+                    }
+                }
+                data.files = temp
+            }
             tabParams.serverDirectory = data.currentDirectory
             gl.splitbox.tabSave()
             $serverDirectoryInput.val(data.currentDirectory)
@@ -216,6 +235,17 @@
     $localDirectoryInput.on('keyup', function (ev) {
         if (ev.keyCode === 13) {
             loadLocalDirectory(this.value)
+        }
+    })
+
+    document.addEventListener('keydown', function(ev){
+        if(ev.getModifierState("Control") && ev.keyCode === 72){
+            console.log("Control + H")
+            hiddenFlag = !hiddenFlag
+            if ($localDirectoryInput.val() != '')
+                loadLocalDirectory($localDirectoryInput.val())
+            if ($serverDirectoryInput.val() != '')
+                loadServerDirectory($serverDirectoryInput.val())
         }
     })
 

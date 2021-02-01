@@ -1,7 +1,6 @@
     'use strict';
 (function () {
     const $tpl = $('.template-serverbrowser')
-    var hiddenFlag = false
     const tabParams = gl.splitbox.tabActive.data('params')
     const $contextmenuLocal = $tpl.find('.contextmenu')
     const $contextmenuServer = $contextmenuLocal.clone()
@@ -19,11 +18,12 @@
 
     const $contextmenu = $([$contextmenuLocal[0], $contextmenuServer[0], $contextmenuBoth[0]])
 
-    const delta = 6;
-    let currentX;
-    let currentY;
+    const delta = 6
+    let currentX
+    let currentY
     let drag = false
-    var checkMouse;
+    var checkMouse
+    var hiddenFlag = false
 
     document.addEventListener('mousedown', function (event) {
         if (event.target.id === "dragable") {
@@ -33,18 +33,18 @@
             } else {
                 event.path[1].className += " active"
             }
-            checkMouse = setInterval(clickOrDrag, 100, event);
+            checkMouse = setInterval(clickOrDrag, 100, event)
         }
-    });
+    })
 
     document.addEventListener('mousemove', (event) => {
         currentX = event.pageX
         currentY = event.pageY
-    });
+    })
 
     function clickOrDrag(event) {
-        let diffX = Math.abs(currentX - event.pageX);
-        let diffY = Math.abs(currentY - event.pageY);
+        let diffX = Math.abs(currentX - event.pageX)
+        let diffY = Math.abs(currentY - event.pageY)
 
         if (diffX < delta && diffY < delta) {
             console.log("click")
@@ -192,19 +192,24 @@
                 return
             }
             tabParams.localDirectory = data.currentDirectory
-            if (hiddenFlag){
-                let temp = []
-                for (let i = 0; i < data.files.length; i += 1){
-                    if(data.files[i].filename.charAt(0) != '.'){
-                        temp.push(data.files[i])
-                    }
-                }
-                data.files = temp
-            }
+            data = filterHidden(data,hiddenFlag)
             gl.splitbox.tabSave()
             $localDirectoryInput.val(data.currentDirectory)
             buildFilelist('local', $local.find('.files'), data.files)
         })
+    }
+
+    const filterHidden = function (data,bool){
+        if (bool){
+            let temp = []
+            for (let i = 0; i < data.files.length; i += 1){
+                if(data.files[i].filename.charAt(0) != '.'){
+                    temp.push(data.files[i])
+                }
+            }
+            data.files = temp
+        }
+        return data
     }
 
     /**
@@ -216,15 +221,7 @@
             if (!data) {
                 return
             }
-            if (hiddenFlag){
-                let temp = []
-                for (let i = 0; i < data.files.length; i += 1){
-                    if(data.files[i].filename.charAt(0) != '.'){
-                        temp.push(data.files[i])
-                    }
-                }
-                data.files = temp
-            }
+            data = filterHidden(data,hiddenFlag)
             tabParams.serverDirectory = data.currentDirectory
             gl.splitbox.tabSave()
             $serverDirectoryInput.val(data.currentDirectory)

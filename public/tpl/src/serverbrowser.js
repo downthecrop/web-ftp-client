@@ -233,13 +233,13 @@
     }
 
     $localDirectoryInput.on('keyup', function (ev) {
-        if (ev.keyCode === 13) {
+        if (ev.key === 'Enter') {
             loadLocalDirectory(this.value)
         }
     })
 
     document.addEventListener('keydown', function(ev){
-        if(ev.getModifierState("Control") && ev.keyCode === 72){
+        if(ev.getModifierState("Control") && ev.key === 'h'){
             console.log("Control + H")
             hiddenFlag = !hiddenFlag
             if ($localDirectoryInput.val() != '')
@@ -250,7 +250,7 @@
     })
 
     $serverDirectoryInput.on('keyup', function (ev) {
-        if (ev.keyCode === 13) {
+        if (ev.key === 'Enter') {
             loadServerDirectory(this.value)
         }
     })

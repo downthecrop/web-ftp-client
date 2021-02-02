@@ -289,20 +289,20 @@ $(function () {
 
     $(document).on('keydown', function (ev) {
         // table select all files with shortcut ctrl+a
-        if (ev.ctrlKey && ev.keyCode === 65 && !$(ev.target).is(':input')) {
+        if (ev.ctrlKey && ev.key.toUpperCase() === 'A' && !$(ev.target).is(':input')) {
             $('.table-files').find('tr.active').closest('table').each(function () {
                 $(this).find('tbody tr').not('.boilerplate').addClass('active')
             })
             ev.preventDefault()
         }
         // del key - trigger remove in the contextmenu
-        if (ev.keyCode === 46) {
+        if (ev.key === 'Delete') {
             $('.table-files').find('tr.active').closest('.table-files').each(function () {
                 $('.contextmenu').filter('[data-id="' + $(this).attr('data-id') + '"]').find('.remove').trigger('click')
             })
         }
         // esc key - close and deselect everything
-        if (ev.keyCode === 27) {
+        if (ev.key === 'Escape') {
             $(document).trigger('click')
         }
     })
@@ -311,10 +311,14 @@ $(function () {
     $(document).on('click', '.table-files tbody tr', function (ev) {
         ev.stopPropagation()
         const $table = $(this).closest('table')
+        //sets first and last elements
         let selection = [this, this]
         let $trs = $table.find('tbody tr')
         if (ev.shiftKey) {
             selection[1] = $trs.filter('.active').first()[0]
+        }
+        if (ev.ctrlKey) {
+            //
         }
         $('.table-files').find('tr.active').removeClass('active')
         let $selection = $trs.filter(selection)
@@ -323,6 +327,7 @@ $(function () {
         } else {
             $selection.first().nextUntil($selection.last()).addBack().add($selection.last()).addClass('active')
         }
+        console.log($selection)
     })
 
     // table of files contextmenu

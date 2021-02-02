@@ -229,26 +229,26 @@
         })
     }
 
-    $localDirectoryInput.on('keyup', function (ev) {
+    $localDirectoryInput.on('keydown', function (ev) {
         if (ev.key === 'Enter') {
             loadLocalDirectory(this.value)
         }
     })
 
+    $serverDirectoryInput.on('keydown', function (ev) {
+        if (ev.key === 'Enter') {
+            loadServerDirectory(this.value)
+        }
+    })
+
     document.addEventListener('keydown', function(ev){
-        if(ev.getModifierState("Control") && ev.key === 'h'){
+        if(ev.getModifierState("Control") && ev.key.toUpperCase() === 'H'){
             console.log("Control + H")
             hiddenFlag = !hiddenFlag
             if ($localDirectoryInput.val() != '')
                 loadLocalDirectory($localDirectoryInput.val())
             if ($serverDirectoryInput.val() != '')
                 loadServerDirectory($serverDirectoryInput.val())
-        }
-    })
-
-    $serverDirectoryInput.on('keyup', function (ev) {
-        if (ev.key === 'Enter') {
-            loadServerDirectory(this.value)
         }
     })
 

@@ -317,8 +317,9 @@ $(function () {
         if (ev.shiftKey) {
             selection[1] = $trs.filter('.active').first()[0]
         }
+        //allow selecting multiple files with cntrl
         if (ev.ctrlKey) {
-            //
+            selection.add($trs.filter('.active').first()[0])
         }
         $('.table-files').find('tr.active').removeClass('active')
         let $selection = $trs.filter(selection)

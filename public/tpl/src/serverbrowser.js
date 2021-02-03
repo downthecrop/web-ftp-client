@@ -1,4 +1,4 @@
-    'use strict';
+'use strict';
 (function () {
     const $tpl = $('.template-serverbrowser')
     const tabParams = gl.splitbox.tabActive.data('params')
@@ -73,11 +73,11 @@
                 event.path[1].className += " dest"
                 elm = 1
             }
-            
-            if (event.path[0].className != "right server"){
+
+            if (event.path[0].className != "right server") {
                 let dragDest = $tpl.find("tr.entry.dest")
             }
-            
+
             //console.log(dragDest.data('file'))
 
             let selected = $tpl.find("tr.entry.active")
@@ -103,7 +103,6 @@
                     })
                 }
             })
-            
         }
         clearInterval(checkMouse)
     })
@@ -192,18 +191,18 @@
                 return
             }
             tabParams.localDirectory = data.currentDirectory
-            data = filterHidden(data,hiddenFlag)
+            data = filterHidden(data, hiddenFlag)
             gl.splitbox.tabSave()
             $localDirectoryInput.val(data.currentDirectory)
             buildFilelist('local', $local.find('.files'), data.files)
         })
     }
 
-    const filterHidden = function (data,bool){
-        if (bool){
+    const filterHidden = function (data, bool) {
+        if (bool) {
             let temp = []
-            for (let i = 0; i < data.files.length; i += 1){
-                if(data.files[i].filename.charAt(0) != '.'){
+            for (let i = 0; i < data.files.length; i += 1) {
+                if (data.files[i].filename.charAt(0) != '.') {
                     temp.push(data.files[i])
                 }
             }
@@ -221,7 +220,7 @@
             if (!data) {
                 return
             }
-            data = filterHidden(data,hiddenFlag)
+            data = filterHidden(data, hiddenFlag)
             tabParams.serverDirectory = data.currentDirectory
             gl.splitbox.tabSave()
             $serverDirectoryInput.val(data.currentDirectory)
@@ -241,8 +240,8 @@
         }
     })
 
-    document.addEventListener('keydown', function(ev){
-        if(ev.getModifierState("Control") && ev.key.toUpperCase() === 'H'){
+    document.addEventListener('keydown', function (ev) {
+        if (ev.ctrlKey && ev.key.toUpperCase() === 'H') {
             console.log("Control + H")
             hiddenFlag = !hiddenFlag
             if ($localDirectoryInput.val() != '')
@@ -362,7 +361,6 @@
         $contextmenuBoth.attr('data-id', $(this).attr('data-id'))
         gl.showContextmenu($contextmenuBoth, ev)
     })
-
     loadServerDirectory(tabParams.serverDirectory)
     loadLocalDirectory(tabParams.localDirectory)
 })()

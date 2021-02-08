@@ -56,29 +56,40 @@
         }
     }
 
+    //drag from local to server
     document.addEventListener('mouseup', function (event) {
+        let left = "left local"
+        let right = "right server"
+        let mode = ""
         console.log(event.path)
         console.log(event.path[0].className)
-        if (drag && (event.path[2].className === "entry"
-            || event.path[1].className === "entry"
-            || event.path[0].className === "right server")) {
-            drag = false
-            let elm
 
+        if (drag && (event.path[0].className === left
+            || event.path[6].className === left
+            || event.path[7].className === left)) {
+                console.log("left")
+                mode = "download"
+                
+        } else if (drag && (event.path[0].className === right
+        || event.path[6].className === right
+        || event.path[7].className === right)) {
+            console.log("right")
+            mode = "upload"
+        }
+
+        if (mode.length > 0) {
             //Tag mouse up element to get its file data
             if (event.target.tagName == "SPAN") {
                 event.path[2].className += " dest"
-                elm = 2
             } else if (event.path[1].className === "entry") {
                 event.path[1].className += " dest"
-                elm = 1
             }
 
+            /*
             if (event.path[0].className != "right server") {
                 let dragDest = $tpl.find("tr.entry.dest")
             }
-
-            //console.log(dragDest.data('file'))
+            */
 
             let selected = $tpl.find("tr.entry.active")
 
@@ -93,7 +104,7 @@
                         'localDirectory': $localDirectoryInput.val(),
                         'serverDirectory': $serverDirectoryInput.val(),
                         'files': files,
-                        'mode': "upload",
+                        'mode': mode,
                         'server': tabParams.server,
                         'recursive': true,
                         'forceTransfer': 1,
@@ -104,6 +115,7 @@
                 }
             })
         }
+        drag = false
         clearInterval(checkMouse)
     })
 
@@ -186,7 +198,10 @@
      * @param {string} directory
      */
     const loadLocalDirectory = function (directory) {
-        gl.socket.send('getLocalFilelist', { 'server': tabParams.server, 'directory': directory }, function (data) {
+        gl.socket.send('getLocalFilelist', {
+            'server': tabParams.server,
+            'directory': directory
+        }, function (data) {
             if (!data) {
                 return
             }
@@ -216,7 +231,10 @@
      * @param {string} directory
      */
     const loadServerDirectory = function (directory) {
-        gl.socket.send('getFtpFilelist', { 'server': tabParams.server, 'directory': directory }, function (data) {
+        gl.socket.send('getFtpFilelist', {
+            'server': tabParams.server,
+            'directory': directory
+        }, function (data) {
             if (!data) {
                 return
             }

@@ -25,26 +25,26 @@
     var checkMouse
     var hiddenFlag = false
 
-    document.addEventListener('mousedown', function (event) {
-        if (event.target.id === "dragable") {
+    document.addEventListener('mousedown', function (e) {
+        if (e.target.id === "dragable") {
             //Set Active to the clicked td element/span parent td
-            if (event.target.tagName == "SPAN") {
-                event.path[2].className += " active"
+            if (e.target.tagName == "SPAN") {
+                e.path[2].className += " active"
             } else {
-                event.path[1].className += " active"
+                e.path[1].className += " active"
             }
-            checkMouse = setInterval(clickOrDrag, 100, event)
+            checkMouse = setInterval(clickOrDrag, 100, e)
         }
     })
 
-    document.addEventListener('mousemove', (event) => {
-        currentX = event.pageX
-        currentY = event.pageY
+    document.addEventListener('mousemove', (e) => {
+        currentX = e.pageX
+        currentY = e.pageY
     })
 
-    function clickOrDrag(event) {
-        let diffX = Math.abs(currentX - event.pageX)
-        let diffY = Math.abs(currentY - event.pageY)
+    function clickOrDrag(e) {
+        let diffX = Math.abs(currentX - e.pageX)
+        let diffY = Math.abs(currentY - e.pageY)
 
         if (diffX < delta && diffY < delta) {
             console.log("click")
@@ -56,37 +56,40 @@
         }
     }
 
+    function nameInPath(e,name){
+        for (let i = 0; i < e.path.length; i += 1){
+            if (e.path[i].className == name){
+                return true
+            }
+        }
+        return false
+    }
+
     //drag from local to server
-    document.addEventListener('mouseup', function (event) {
+    document.addEventListener('mouseup', function (e) {
         let left = "left local"
         let right = "right server"
         let mode = ""
-        console.log(event.path)
-        console.log(event.path[0].className)
 
-        if (drag && (event.path[0].className === left
-            || event.path[6].className === left
-            || event.path[7].className === left)) {
+        if (drag && nameInPath(e,left)) {
                 console.log("left")
                 mode = "download"
                 
-        } else if (drag && (event.path[0].className === right
-        || event.path[6].className === right
-        || event.path[7].className === right)) {
+        } else if (drag && nameInPath(e,right)) {
             console.log("right")
             mode = "upload"
         }
 
         if (mode.length > 0) {
             //Tag mouse up element to get its file data
-            if (event.target.tagName == "SPAN") {
-                event.path[2].className += " dest"
-            } else if (event.path[1].className === "entry") {
-                event.path[1].className += " dest"
+            if (e.target.tagName == "SPAN") {
+                e.path[2].className += " dest"
+            } else if (e.path[1].className === "entry") {
+                e.path[1].className += " dest"
             }
 
             /*
-            if (event.path[0].className != "right server") {
+            if (e.path[0].className != "right server") {
                 let dragDest = $tpl.find("tr.entry.dest")
             }
             */
@@ -269,7 +272,7 @@
         }
     })
 
-    // bind to listen for some events
+    // bind to listen for some es
     gl.socket.bind(function (message) {
         let func = null
         let currentDir = null
@@ -375,7 +378,7 @@
 
     $(document).on('contextmenu', '.server, .local', function (ev) {
         ev.stopPropagation()
-        ev.preventDefault()
+        ev.preDefault()
         $contextmenuBoth.attr('data-id', $(this).attr('data-id'))
         gl.showContextmenu($contextmenuBoth, ev)
     })

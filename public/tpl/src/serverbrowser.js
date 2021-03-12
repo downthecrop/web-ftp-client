@@ -378,7 +378,7 @@
 
     $(document).on('contextmenu', '.server, .local', function (ev) {
         ev.stopPropagation()
-        ev.preDefault()
+        ev.preventDefault()
         $contextmenuBoth.attr('data-id', $(this).attr('data-id'))
         gl.showContextmenu($contextmenuBoth, ev)
     })
